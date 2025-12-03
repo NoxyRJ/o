@@ -2,113 +2,735 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quer namorar comigo?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Noxy7</title>
+    <meta name="description" content="Link personalizado do Noxy, onde tem links como Discord, perfil, links, Spotify, TikTok, Steam. Site personalizado feito por Noxy.gg">
+    <meta name="keywords" content="Noxy7, Discord, Perfil, Links, Spotify, TikTok, Steam">
+    <meta name="author" content="Noxy.gg">
+
+    <meta property="og:title" content="Noxy7" />
+    <meta property="og:description" content="Conheça o perfil interativo de Noxy7 com seus links" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/NoxyRJ/Site/main/media/perfil.gif" />
+    <meta property="og:url" content="https://noxyrj.github.io/1/" />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#FF0000">
+
+    <link rel="icon" type="image/png" href="media/icon.png" />
+    <link rel="icon" type="image/png" href="media/icon.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="media/icon.png" />
+    <link rel="shortcut icon" href="media/icon.png" type="image/png" />
+
     <style>
-        body {
-            margin: 0;
-            height: 100vh;
+        /* Estilos Globais e Reset */
+        *, *::before, *::after {
+            margin: 0; padding: 0; box-sizing: border-box;
+        }
+        html, body {
+            width: 100%; height: 100%; min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: transparent;
+            display: flex; justify-content: center; align-items: center;
+            overflow-x: hidden; padding: 1rem;
+        }
+        #bg-image {
+            position: fixed; inset: 0;
+            min-width: 100%; min-height: 100%;
+            object-fit: cover; z-index: -2;
+        }
+        
+        /* Overlay Principal */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            margin: auto;
+            max-width: 570px;
+            max-height: 82vh;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 3s;
             display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 0 8px rgba(0,0,0,.9), inset 0 0 15px rgba(0,0,0,.8);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,.2) transparent;
+        }
+        .overlay::-webkit-scrollbar { width: 8px; }
+        .overlay::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.2);
+            border-radius: 10px;
+        }
+        .overlay.show { opacity: 1; }
+        
+        /* Conteúdo */
+        .content {
+            flex: 1; text-align: center; color: white;
+            opacity: 0; transition: opacity 1s;
+        }
+        .content.show { opacity: 1; }
+        h1 { font-size: clamp(1.8rem, 5vw, 3rem); margin: 10px 0; }
+        h2, p {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            margin-bottom: 1rem; color: white;
+        }
+        
+        /* Avatar */
+        .avatar-wrapper {
+            display: inline-block;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .avatar {
+            width: clamp(100px, 30vw, 150px);
+            border-radius: 50%;
+            display: block;
+            margin: auto;
+            position: relative;
+        }
+        .avatar-border {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 0;
+            background: radial-gradient(rgba(255,255,255,0.15), transparent);
+            animation: pulseNeonBlack 3s infinite ease-in-out;
+        }
+        
+        /* Imagem Extra */
+        .imagem-extra {
+            width: 90%; border-radius: 12px; margin: 1rem auto; display: block;
+        }
+        
+        /* Tags e Links */
+        .tags-section h2 { margin-bottom: 0.5rem; }
+        .tags, .links {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 0.5rem; margin-bottom: 1.5rem;
+        }
+        .tags span, .links a {
+            background: rgba(255,255,255,.1);
+            border-radius: 12px; padding: 0.4rem 0.7rem;
+            font-size: 1rem; color: white; font-weight: bold;
+            display: flex; align-items: center; gap: 6px;
+            text-decoration: none; transition: 0.3s;
+        }
+        .links a:hover {
+            background: rgba(255,255,255,.2); text-decoration: underline;
+            animation: pulseGlowWhite 1.5s infinite;
+        }
+        .link-icon { width: 18px; height: 18px; }
+        
+        /* Card da Playlist */
+        .playlist-card {
+            background: rgba(30,215,96,.15);
+            border-radius: 16px; padding: 1rem; max-width: 400px;
+            display: flex; align-items: center; gap: 1rem;
+            margin: 0 auto 1rem; box-shadow: 0 0 8px #1DB95488;
+            position: relative; cursor: pointer; transition: 0.3s;
+        }
+        .playlist-card:hover { animation: pulseGlowGreen 1.5s infinite; }
+        .playlist-card::before {
+            content: url("https://cdn.simpleicons.org/spotify/1DB954");
+            position: absolute; top: 10px; right: 10px;
+            width: 24px; height: 24px;
+        }
+        .playlist-cover {
+            width: 80px; height: 80px;
+            border-radius: 12px; object-fit: cover;
+        }
+        .playlist-info { color: white; flex: 1; text-align: left; }
+        .playlist-info h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .listen-btn {
+            padding: 0.5rem 1rem;
+            background: #fff9; color: black;
+            border-radius: 9999px; font-weight: 600;
+            font-size: 1rem; border: none; cursor: pointer;
+        }
+        .listen-btn:hover { background: #fff; }
+        
+        /* Volume Control Box */
+        #volume-box {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-family: sans-serif;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        #volume-box button { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+        #volume-box input[type="range"] { width: 100px; max-width: 80%; }
+        
+        /* Contador de Visitas */
+        #view-counter {
+            display: none;
+            user-select: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-family: sans-serif;
+            box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.9), inset 0 0 15px 3px rgba(0, 0, 0, 0.8);
+            z-index: 1;
+        }
+        
+        /* Modal de Áudio (Intro) */
+        #audio-modal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.85);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 1.5rem; z-index: 9999;
+        }
+        .intro-logo { width: 80%; max-width: 600px; margin-bottom: 2rem; }
+        #audio-modal button {
+            padding: 12px 24px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            background: rgb(255, 0, 0);
+            color: white; border: none;
+            border-radius: 10px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+            box-shadow:0 0 10px #f00,0 0 20px #f00;
+            animation: pulseNeon 1.5s infinite;
+        }
+        
+        /* Estilos do Painel de Configurações do pc */
+        .config-btn {
+            position: relative;
+            z-index: 999;
+            display: block;
+            margin: 10px auto 25px auto;
+            background: rgba(255, 0, 100, 0.85);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(255, 0, 100, 0.6);
+        }
+        .config-btn:hover { background: rgba(255, 0, 120, 1); transform: scale(1.05); }
+        .config-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            z-index: 999999;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
+            overflow-y: auto;
+            padding: 20px;
         }
-
-        .container {
+        .config-box {
+            background: rgba(25, 25, 25, 0.95);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(255, 0, 100, 0.3);
+            color: white;
+            width: 90%;
+            max-width: 450px;
+            animation: aparecer 0.3s ease;
             text-align: center;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.15);
-            animation: fadeIn 1.5s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-
-        h1 {
-            font-size: 2.3rem;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.7);
-        }
-
-        .buttons {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        button {
-            padding: 12px 25px;
-            font-size: 1.2rem;
+        .config-box ul { list-style: none; padding: 0; margin: 20px 0; text-align: center; }
+        .config-box li strong { color: #FF00AA; }
+        .config-box li { margin-bottom: 10px; word-wrap: break-word; }
+        .close-btn {
+            margin-top: 20px;
+            background: rgba(255, 0, 100, 0.8);
             border: none;
-            border-radius: 10px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: white;
             cursor: pointer;
             transition: 0.3s;
         }
-
-        #sim {
-            background-color: #66ff99;
-            color: #000;
-        }
-
-        #sim:hover {
-            transform: scale(1.1);
-            background-color: #55e68a;
-        }
-
-        #nao {
-            background-color: #ff6666;
-            color: #fff;
+        .close-btn:hover { background: rgba(255, 0, 100, 1); }
+        
+        /* Discord Card e Animação Neon */
+        .neon-sync{animation:pulseNeonBlack 3s infinite ease-in-out;border-radius:50%}
+        #discord-status-circle {
             position: absolute;
+            bottom: 6px;
+            right: 6px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 3px solid #1a1a1a;
+            background-color: gray;
         }
-
-        #mensagem-linda {
-            display: none;
-            font-size: 1.8rem;
-            color: #fff;
-            margin-top: 20px;
-            animation: fadeIn 1.2s ease;
+        
+        /* Animações */
+        @keyframes pulseNeon {
+            0%, 100% { box-shadow: 0 0 6px #ff0000, 0 0 12px #ff0000; transform: scale(1); }
+            50% { box-shadow: 0 0 10px #ff3333, 0 0 20px #ff3333; transform: scale(1.02); }
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes pulseNeonBlack {
+            0%,100% { box-shadow: 0 0 8px #fff, 0 0 16px #fff, 0 0 24px #fff; }
+            50% { box-shadow: 0 0 4px #fff, 0 0 10px #fff, 0 0 15px #fff; }
+        }
+        @keyframes pulseGlowWhite {
+            0%, 100% { box-shadow: 0 0 4px rgba(255,255,255,.7); transform: scale(1); }
+            50% { box-shadow: 0 0 12px rgba(255,255,255,1); transform: scale(1.05); }
+        }
+        @keyframes pulseGlowGreen {
+            0%, 100% { box-shadow: 0 0 4px rgba(30,215,96,.7); transform: scale(1); }
+            50% { box-shadow: 0 0 12px rgba(30,215,96,1); transform: scale(1.05); }
+        }
+        @keyframes aparecer {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes blinkNeon {
+            0% { opacity: 0.7; text-shadow: 0 0 4px #fff; }
+            100% { opacity: 1; text-shadow: 0 0 16px #fff; }
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Quer namorar comigo? ❤️</h1>
-        <div class="buttons">
-            <button id="sim">Sim</button>
-            <button id="nao">Não</button>
+    <div id="volume-box">
+        <button id="volume" aria-label="Toggle volume">🔊</button>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.2" aria-label="Volume slider" />
+    </div>
+
+    <div class="view-box" id="view-counter">👁️ Carregando...</div>
+
+    <div id="bg-container">
+        <img src="media/bg.jpg" id="bg-image" alt="Fundo">
+    </div>
+
+    <div id="audio-modal">
+        <img src="media/png inicial.png" alt="Logo" class="intro-logo" style="user-select:none;-webkit-user-drag:none;" draggable="false">
+        <button id="btn-play">𝗖𝗹𝗶𝗾𝘂𝗲 𝗮𝗾𝘂𝗶</button>
+        <p style="user-select:none;position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:#fff;font-size:1.2rem;margin:0;text-shadow:0 0 4px #fff,0 0 8px #fff,0 0 16px #fff,0 0 32px #fff;animation:blinkNeon 1.5s infinite alternate;">𝐒𝐢𝐭𝐞 𝐟𝐞𝐢𝐭𝐨 𝐩𝐨𝐫: 𝐍𝐨𝐱𝐲.𝐠𝐠</p>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="media/music.mp3" type="audio/mp3" />
+    </audio>
+
+    <div class="overlay" id="overlay">
+        <div class="content" id="main-content">
+            
+            <div class="avatar-wrapper">
+                <div class="avatar-border"></div>
+                <img src="media/perfil.gif" alt="Avatar" class="avatar"
+                    style="user-select: none; -webkit-user-drag: none;" draggable="false" />
+            </div>
+            
+            <h1 style="user-select: none;">𝑵𝒐𝒙𝒚7</h1>
+            <p style="user-select: none;  font-size: 1.3rem;">Eu sou o mano que conhece muitas pessoas
+                Falo com poucas e a todo momento me sinto sozinho ~ Copa</p>
+            
+            <img src="media/imagem.jpg" alt="Imagem extra" class="imagem-extra"
+                style="user-select: none; -webkit-user-drag: none;" draggable="false" />
+
+            <div id="discord-status" style="text-align: center; margin: 2rem 0; color: white; font-family: Arial, sans-serif; position: relative;">
+                <div style="font-size: 1.7rem; user-select: none; font-weight: bold; margin-bottom: 10px;">𝑫𝒊𝒔𝒄𝒐𝒓𝒅</div>
+                
+                <div style="position: relative; display: inline-block;">
+                    <a href="https://discord.com/users/278691315594559489" target="_blank" rel="noopener noreferrer">
+                        <img id="discord-avatar" class="neon-sync" src="" alt="Avatar Discord"
+                            style="width: 120px; height: 120px; border-radius: 50%; transition: transform 0.3s;"
+                            onmouseover="this.style.transform='scale(1.05)'"
+                            onmouseout="this.style.transform='scale(1)'"
+                        />
+                    </a>
+                    <span id="discord-status-circle" class="neon-sync" title="Status"></span>
+                </div>
+
+                <div id="display-name" style="margin-top: 10px; font-size: 1.6rem; font-weight: bold;">Noxy7</div>
+                <div style="font-size: 1.1rem; opacity: 0.8;">
+                    <span id="discord-username">@</span><span id="discord-discriminator"></span>
+                </div>
+            </div>
+            
+            <button id="btn-config" class="config-btn">💻 Configurações do meu PC</button>
+
+            <div class="tags-section" style="pointer-events:none;user-select:none;">
+                <h2 style="user-select: none; font-size: 1.7rem;">𝑻𝒂𝒈𝒔</h2>
+                <div class="tags">
+                    <span>👨‍💻 Programador</span>
+                    <span>🎮 Jogador</span>
+                    <span>☠️ Tóxico</span>
+                    <span>🌙 Insônia</span>
+                </div>
+            </div>
+
+            <div class="links-section">
+                <h2 style="user-select: none; font-size: 1.7rem;">𝑳𝒊𝒏𝒌𝒔</h2>
+                <div class="links">
+                    <a href="https://discord.com/users/278691315594559489" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/discord/5865F2" alt="Discord" class="link-icon" /> Discord
+                    </a>
+                    <a href="https://steamcommunity.com/id/Noxy_gg/" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/steam/171A21" alt="Steam" class="link-icon" /> Steam
+                    </a>
+                    <a href="https://www.roblox.com/pt/users/315909186/profile" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/roblox/E00E1A" alt="Roblox" class="link-icon" /> Roblox
+                    </a>
+                    <a href="https://www.roblox.com/share/g/16392138" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/roblox/E00E1A" alt="Roblox" class="link-icon" /> Grupo
+                    </a>
+                    <a href="https://www.tiktok.com/@noxy.gg" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/tiktok/000000" alt="TikTok" class="link-icon" /> TikTok
+                    </a>
+                    <a href="https://open.spotify.com/user/7ybhk69ilst4jfm3a24n6npzb" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/spotify/1DB954" alt="Spotify" class="link-icon" /> Spotify
+                    </a>
+                    <a href="https://www.youtube.com/@NoxyRJ" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/youtube/FF0000" alt="YouTube" class="link-icon" /> YouTube
+                    </a>
+                    <a href="https://www.instagram.com/hey.thsc7/?next=%2F" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" class="link-icon" /> Instagram
+                    </a>
+                    <a href="https://www.xbox.com/pt-BR/play/user/iCHiBANN8988" target="_blank" rel="noopener noreferrer">
+                        <img src="media/Xbox.png" alt="Xbox" class="link-icon" /> Xbox
+                    </a>
+                    <a href="https://x.com/NoxyRJ" target="_blank" rel="noopener noreferrer">
+                        <img src="media/X.png" alt="Twitter" class="link-icon" /> Twitter
+                    </a> 
+                    <a href="https://www.twitch.tv/noxyrj_" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/twitch/9146FF" alt="Twitch" class="link-icon" /> Twitch
+                    </a>
+                    <a href="https://linktr.ee/NoxyRJ_" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.simpleicons.org/linktree/43E660" alt="linktr.ee" class="link-icon" /> linktr.ee
+                    </a>
+                </div>
+            </div>
+
+            <div class="playlist-section">
+                <h2 style="user-select: none; font-size: 1.7rem;">𝑷𝒍𝒂𝒚𝒍𝒊𝒔𝒕 𝑺𝒑𝒐𝒕𝒊𝒇𝒚</h2>
+                <div class="playlist-card" onclick="window.open('https://open.spotify.com/playlist/1O4sTRPvEHAIvvFjHIQPfR', '_blank')">
+                    <img src="media/Capa spotify.jpg" style="user-select: none; -webkit-user-drag: none;" draggable="false" alt="Capa Playlist Spotify" class="playlist-cover" />
+                    <div class="playlist-info">
+                        <h3 style="user-select: none;">Minha Playlist</h3>
+                        <button style="user-select: none;" class="listen-btn">Ouvir no Spotify</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div id="mensagem-linda">Você acabou de me fazer a pessoa mais feliz do mundo! ❤️🥺<br>Eu te amo demais!</div>
+    </div>   
+
+    <div id="config-panel" class="config-overlay">
+        <div class="config-box">
+            <h2 style="color: #FF0064;">💻 Configurações do PC</h2>
+            <ul>
+                <li><strong>Processador:</strong> AMD Ryzen 5 1600</li>
+                <li><strong>Placa-mãe:</strong> PCWare APM A320G</li>
+                <li><strong>Water Cooler:</strong> Water Cooler Rise Mode, RGB, 360mm</li>
+                <li><strong>Memória RAM:</strong> Asgard 8GBx2 3200Mhz série w2</li>
+                <li><strong>Placa de vídeo:</strong> Rx 550 4Gb</li>
+                <li><strong>Armazenamento:</strong> SSD 240GB + 2xHD 500GB</li>
+                <li><strong>Fans:</strong> 10 Fans Wx-1 argb, 800-2000rpm, Uni-fan</li>
+                <li><strong>Fonte:</strong> Gamemax GX800, 800w, 80 plus gold, PFC Ativo</li>
+            </ul>
+            <h2 style="color: #FF0064;">💻 Monitores</h2>
+            <ul>
+                <li><strong>Monitor primário:</strong> Dahua DHI-LM25-E231B, 25", IPS, 180Hz, Full HD</li>
+                <li><strong>Monitor secundário:</strong> HQ 21", 75Hz (horizontal)</li>
+            </ul>
+            <h2 style="color: #FF0064;">💻 Periféricos</h2>
+            <ul>
+                <li><strong>Teclado:</strong> Ajazz ak820</li>
+                <li><strong>Mouse:</strong> Ambidestro Fontrek BlackFire</li>
+                <li><strong>Headset:</strong> Mancer Aura</li>
+            </ul>
+            <button id="btn-fechar" class="close-btn">Fechar</button>
+        </div>
     </div>
 
     <script>
-        const botaoNao = document.getElementById('nao');
-        const botaoSim = document.getElementById('sim');
-        const msg = document.getElementById('mensagem-linda');
+        // 1. Configurações de Áudio e Modal de Abertura
+        const audioModal = document.getElementById('audio-modal');
+        const btnPlay = document.getElementById('btn-play');
+        const volumeBox = document.getElementById('volume-box');
+        const music = document.getElementById('bg-music');
+        const volumeBtn = document.getElementById('volume');
+        const volumeSlider = document.getElementById('volume-slider');
+        const overlay = document.getElementById("overlay");
+        const mainContent = document.getElementById("main-content");
+        const extraImage = document.querySelector(".imagem-extra");
+        
+        // Define o volume inicial
+        music.volume = 0.1;
 
-        // Faz o botão "não" desviar sempre
-        botaoNao.addEventListener('mouseover', () => {
-            const largura = window.innerWidth - 150;
-            const altura = window.innerHeight - 80;
-
-            const novoX = Math.random() * largura;
-            const novoY = Math.random() * altura;
-
-            botaoNao.style.left = novoX + "px";
-            botaoNao.style.top = novoY + "px";
+        btnPlay.addEventListener('click', () => {
+            music.play().then(() => {
+                // Sucesso ao iniciar o áudio
+                audioModal.style.display = 'none';
+                volumeBox.style.display = 'flex';
+                overlay.classList.add("show");
+                mainContent.classList.add("show");
+                document.getElementById("view-counter").style.display="block";
+                updateViews();
+            }).catch(e => {
+                console.warn('Erro ao iniciar áudio:', e);
+                audioModal.style.display = 'none';
+                volumeBox.style.display = 'flex';
+                overlay.classList.add("show");
+                mainContent.classList.add("show");
+                document.getElementById("view-counter").style.display="block";
+                updateViews();
+            });
         });
 
-        // Ação do botão "sim"
-        botaoSim.addEventListener('click', () => {
-            msg.style.display = 'block';
+        // Toggle volume (Mute/Unmute)
+        volumeBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                volumeBtn.textContent = '🔊';
+            } else {
+                music.pause();
+                volumeBtn.textContent = '🔇';
+            }
         });
-    </script>
+
+        // Slider de volume
+        volumeSlider.addEventListener('input', () => {
+            music.volume = volumeSlider.value;
+            volumeBtn.textContent = music.volume == 0 ? '🔇' : '🔊';
+            if (music.paused && music.volume > 0) music.play();
+        });
+
+
+        // 2. Painel de Configurações
+        document.addEventListener("DOMContentLoaded", () => {
+            const btnConfig = document.getElementById("btn-config");
+            const btnFechar = document.getElementById("btn-fechar");
+            const painel = document.getElementById("config-panel");
+
+            if (btnConfig && btnFechar && painel && volumeBox) {
+                // Mostrar painel
+                btnConfig.addEventListener("click", () => {
+                    painel.style.display = "flex";
+                    document.body.style.overflow = "hidden";
+                    volumeBox.style.zIndex = "0";
+                    volumeBox.style.filter = "blur(3px) brightness(0.7)";
+                    volumeBox.style.pointerEvents = "none";
+                });
+
+                // Fechar painel
+                const fecharPainel = () => {
+                    painel.style.display = "none";
+                    document.body.style.overflow = "";
+                    volumeBox.style.zIndex = "1";
+                    volumeBox.style.filter = "none";
+                    volumeBox.style.pointerEvents = "auto";
+                };
+
+                btnFechar.addEventListener("click", fecharPainel);
+
+                // Fechar clicando fora
+                painel.addEventListener("click", (e) => {
+                    if (e.target === painel) {
+                        fecharPainel();
+                    }
+                });
+            } else {
+                console.error("❌ Elementos do Painel de Configurações não encontrados no DOM.");
+            }
+
+            // 3. Atualizar Imagem Extra para GIF ao carregar
+            if(extraImage){
+                extraImage.src="media/Extra.gif";
+                extraImage.alt="GIF animado extra";
+            }
+        });
+
+
+        // 4. Contador de visitas (jsonbin.io)
+        const BIN_ID="685cb3a58a456b7966b5ccfb";
+        const API_KEY="$2a$10$oZaxBKrkt0bsikz7EJMgwOPHSwO2d3mf2ErT7iM67w68jYxhT4psW";
+        const URL=`https://api.jsonbin.io/v3/b/${BIN_ID}`;
+        const visited=localStorage.getItem("siteVisited");
+        
+        async function updateViews(){
+            try{
+                const res=await fetch(URL,{headers:{"X-Master-Key":API_KEY}});
+                const {record}=await res.json();
+                let views=record.views;
+
+                if(!visited){
+                    views++;
+                    await fetch(URL,{
+                        method:"PUT",
+                        headers:{"Content-Type":"application/json","X-Master-Key":API_KEY},
+                        body:JSON.stringify({views})
+                    });
+                    localStorage.setItem("siteVisited","true");
+                }
+                document.getElementById("view-counter").textContent=`👁️ ${views} visitantes`;
+            }catch(e){
+                console.error("Erro ao atualizar visitas:",e);
+                document.getElementById("view-counter").textContent=`👁️ Erro`;
+            }
+        }
+        
+    // Inicializa o Discord Lanyard
+    async function fetchDiscordStatus() {
+        const userId = "278691315594559489";
+        const apiLink = `https://api.lanyard.rest/v1/users/${userId}`;
+
+        try {
+            const response = await fetch(apiLink);
+            if (!response.ok) throw new Error("Erro na API");
+
+            const data = await response.json();
+            if (!data.data || !data.data.discord_user) throw new Error("Usuário não encontrado");
+
+            const user = data.data.discord_user;
+            const status = data.data.discord_status;
+
+            // Atualiza avatar
+            const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+            const avatarEl = document.getElementById("discord-avatar");
+            if (avatarEl && avatarEl.src !== avatarUrl) { avatarEl.src = avatarUrl; }
+
+            // Nome e Username
+            document.getElementById("display-name").textContent = user.global_name || user.username;
+            document.getElementById("discord-username").textContent = "@" + user.username;
+            
+            // Discriminator
+            const discriminatorEl = document.getElementById("discord-discriminator");
+            if (user.discriminator !== "0") {
+                discriminatorEl.textContent = "#" + user.discriminator;
+                discriminatorEl.style.display = "inline";
+            } else {
+                discriminatorEl.style.display = "none";
+            }
+
+            // Círculo de status
+            const statusCircle = document.getElementById("discord-status-circle");
+            let color = "gray";
+            let statusText = "Offline";
+
+            switch (status) {
+                case "online": color = "#43B581"; statusText = "Online"; break;
+                case "idle": color = "#FAA61A"; statusText = "Ausente"; break;
+                case "dnd": color = "#F04747"; statusText = "Não perturbe"; break;
+                case "offline": default: color = "gray"; statusText = "Offline"; break;
+            }
+
+            if (statusCircle) {
+                statusCircle.style.backgroundColor = color;
+                statusCircle.title = statusText;
+                statusCircle.classList.add("neon-sync");
+            }
+
+        } catch (error) {
+            console.error("Erro ao buscar status do Discord:", error);
+            const statusEl = document.getElementById("discord-status");
+            if (statusEl) { statusEl.innerHTML = `<p style="color:red;">Status Discord indisponível</p>`; }
+        }
+    }
+
+    // Inicializa o Discord Lanyard e o loop de atualização
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchDiscordStatus();
+        setInterval(fetchDiscordStatus, 5000); // Atualiza a cada 5 segundos
+    });
+
+
+    // Musica do site
+    (() => {
+        // ⚠️ SUBSTITUA: Link de música REAL do Spotify.
+        const spotifyUrl = "https://open.spotify.com/intl-pt/track/0c5GfvbEqVAXTCfSkhswtJ?si=784b639399214e45"; 
+        const manualArtist = "isotopxs";
+        const fallbackImage = "media/Capa spotify.jpg"; 
+
+        async function loadSpotifySong(url) {
+            let title = "Música Desconhecida (Erro)";
+            let artist = manualArtist;
+            let thumbnailUrl = fallbackImage;
+
+            try {
+                // Endpoint OEmbed oficial do Spotify.
+                const oembedBase = "https://open.spotify.com/oembed"; 
+                const oembedUrl = `${oembedBase}?url=${encodeURIComponent(url)}`;
+                
+                const res = await fetch(oembedUrl);
+                
+                if (!res.ok) throw new Error(`Status de resposta: ${res.status}`);
+                
+                const data = await res.json();
+
+                // Extrai dados reais
+                title = data.title || title;
+                artist = data.author_name?.trim() || manualArtist;
+                thumbnailUrl = data.thumbnail_url || fallbackImage;
+
+            } catch (e) {
+                console.error("❌ Erro ao buscar dados do Spotify. Usando fallback.", e);
+            }
+
+            // Renderiza o componente com os dados
+            renderMusic(url, title, artist, thumbnailUrl);
+        }
+
+        function renderMusic(url, title, artist, thumbnailUrl) {
+            const musicDiv = document.createElement("div");
+            musicDiv.id = "musicInfo";
+            
+            // Estilos
+            Object.assign(musicDiv.style, {
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: "20px",
+                textAlign: "center",
+                color: "white"
+            });
+
+            // Estrutura HTML
+            musicDiv.innerHTML = `
+                <div style="font-size:1.7rem;user-select:none;font-weight:bold;margin-bottom:10px;">
+                    𝑴𝒖𝒔𝒊𝒄𝒂 𝒅𝒐 𝑺𝒊𝒕𝒆
+                </div>
+                <a href="${url}" target="_blank" rel="noopener noreferrer">
+                    <img src="${thumbnailUrl}" alt="Capa da música" class="neon-sync"
+                        style="width:150px;height:150px;margin-bottom:10px;cursor:pointer;border-radius:12px;">
+                </a>
+                <div class="music-data">
+                    <div style="font-size:18px;font-weight:bold;color:white;">${title}</div>
+                    <div style="font-size:14px;color:white;opacity:0.8;">${artist}</div>
+                </div>
+            `;
+
+            // Adiciona ao elemento principal
+            document.getElementById("main-content")?.appendChild(musicDiv)
+                || console.error("Content principal não encontrado! Verifique o id.");
+        }
+
+        // Inicializa o Spotify (Música Fixa)
+        document.addEventListener("DOMContentLoaded", () => loadSpotifySong(spotifyUrl));
+    })();
+</script>
 </body>
 </html>
