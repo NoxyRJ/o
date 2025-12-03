@@ -5,25 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quer namorar comigo?</title>
     <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
+        body { background: #000; color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; overflow-x: hidden; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
 
-        .container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.15);
-        }
+        .container { position: relative; z-index: 2; max-width: 900px; width: 90%; padding: 40px; background: rgba(0, 0, 0, 0.50); border-radius: 20px; backdrop-filter: blur(15px); box-shadow: 0 0 25px rgba(255, 255, 255, 0.1); }
 
         h1 {
             font-size: 2.3rem;
@@ -92,6 +76,149 @@
         const botaoSim = document.getElementById('sim');
         const msg = document.getElementById('mensagem-linda');
 
+        // Faz o botão "não" desviar sempre
+        botaoNao.addEventListener('mouseover', () => {
+            const largura = window.innerWidth - 150;
+            const altura = window.innerHeight - 80;
+
+            const novoX = Math.random() * largura;
+            const novoY = Math.random() * altura;
+
+            botaoNao.style.left = novoX + "px";
+            botaoNao.style.top = novoY + "px";
+        });
+
+        // Ação do botão "sim"
+        botaoSim.addEventListener('click', () => {
+            msg.style.display = 'block';
+        });
+    </script>
+</body>
+<!-- Nova versão aprimorada -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quer namorar comigo?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ff6a88, #ff99ac);
+            animation: bgMove 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgMove {
+            0% { background: linear-gradient(135deg, #ff6a88, #ff99ac); }
+            100% { background: linear-gradient(135deg, #ff99ac, #ffe6eb); }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.20);
+            backdrop-filter: blur(12px);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.20);
+            animation: fadeIn 2s;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: white;
+            text-shadow: 0 0 15px rgba(255,255,255,0.8);
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #sim {
+            background-color: #8affc1;
+            font-weight: bold;
+        }
+
+        #sim:hover {
+            transform: scale(1.15);
+            background-color: #74e6aa;
+        }
+
+        #nao {
+            background-color: #ff6b6b;
+            color: white;
+            position: absolute;
+        }
+
+        #mensagem-linda {
+            display: none;
+            font-size: 2rem;
+            color: #fff;
+            margin-top: 25px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Corações animados */
+        .coracao {
+            position: fixed;
+            top: -10px;
+            font-size: 20px;
+            animation: cair 5s linear infinite;
+            color: white;
+            opacity: 0.8;
+        }
+
+        @keyframes cair {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(120vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quer namorar comigo? ❤️</h1>
+        <div class="buttons">
+            <button id="sim">Sim</button>
+            <button id="nao">Não</button>
+        </div>
+        <div id="mensagem-linda">Você acabou de me dar o melhor “sim” da minha vida! ❤️🥺<br>Eu te amo infinitamente!</div>
+    </div>
+
+    <script>
+        const botaoNao = document.getElementById('nao');
+        const botaoSim = document.getElementById('sim');
+        const msg = document.getElementById('mensagem-linda');
+
         botaoNao.addEventListener('mouseover', () => {
             const largura = window.innerWidth - 150;
             const altura = window.innerHeight - 80;
@@ -105,7 +232,23 @@
 
         botaoSim.addEventListener('click', () => {
             msg.style.display = 'block';
+            soltarCoracoes();
         });
+
+        function soltarCoracoes() {
+            setInterval(() => {
+                const coracao = document.createElement('div');
+                coracao.innerHTML = '❤️';
+                coracao.classList.add('coracao');
+                coracao.style.left = Math.random() * 100 + 'vw';
+                coracao.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                document.body.appendChild(coracao);
+
+                setTimeout(() => {
+                    coracao.remove();
+                }, 5000);
+            }, 350);
+        }
     </script>
 </body>
 </html>
