@@ -13,14 +13,15 @@
     <style>
         /* --- TRANSIÇÃO SUAVE DA TELA --- */
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
-            background-color: #000;
-            opacity: 0;
-            animation: fadeScreen 2s forwards;
-        }
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    background-color: #000;
+    opacity: 0;
+    animation: fadeScreen 2s forwards;
+    cursor: url('Media/cursor.cur'), pointer; /* <- cursor adicionado */
+}
 
         @keyframes fadeScreen {
             from { opacity: 0; }
@@ -170,6 +171,7 @@
             0% { transform: scale(0.5) translate(0,0); opacity: 1; }
             100% { transform: scale(2.5) translate(var(--x), var(--y)); opacity: 0; }
         }
+        
     </style>
 </head>
 
