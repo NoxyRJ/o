@@ -1,38 +1,77 @@
-<!-- Nova versão aprimorada -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quer namorar comigo?</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- TRANSIÇÃO SUAVE DA TELA --- */
         body {
             margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0;
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
-            background: linear-gradient(135deg, #ff6a88, #ff99ac);
-            animation: bgMove 8s infinite alternate ease-in-out;
+            background-color: #000;
+            opacity: 0;
+            animation: fadeScreen 2s forwards;
         }
 
-        @keyframes bgMove {
-            0% { background: linear-gradient(135deg, #ff6a88, #ff99ac); }
-            100% { background: linear-gradient(135deg, #ff99ac, #ffe6eb); }
+        @keyframes fadeScreen {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
+        /* --- FUNDO EM VÍDEO --- */
+        #bgVideo {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.35);
+        }
+
+        /* --- CONTAINER COM BORDA BRILHANTE --- */
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.20);
-            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.45);
             padding: 50px;
             border-radius: 25px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.20);
-            animation: fadeIn 2s;
+            backdrop-filter: blur(12px);
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+            margin-top: 80px;
+            position: relative;
+            transition: 0.8s ease;
+
+            box-shadow:
+                0 0 15px rgba(255, 0, 150, 0.7),
+                0 0 25px rgba(255, 0, 150, 0.5),
+                0 0 50px rgba(255, 0, 150, 0.3);
+
+            animation: neonPulse 3s infinite alternate ease-in-out;
+        }
+
+        @keyframes neonPulse {
+            0% {
+                box-shadow:
+                    0 0 10px rgba(255, 0, 150, 0.4),
+                    0 0 20px rgba(255, 0, 150, 0.3),
+                    0 0 35px rgba(255, 0, 150, 0.2);
+            }
+            100% {
+                box-shadow:
+                    0 0 25px rgba(255, 0, 150, 1),
+                    0 0 45px rgba(255, 0, 150, 0.8),
+                    0 0 70px rgba(255, 0, 150, 0.6);
+            }
         }
 
         h1 {
@@ -47,11 +86,13 @@
             50% { transform: scale(1.05); }
         }
 
+        /* --- BOTÕES --- */
         .buttons {
             margin-top: 30px;
             display: flex;
             justify-content: center;
             gap: 25px;
+            transition: 0.6s ease;
         }
 
         button {
@@ -63,21 +104,46 @@
             transition: 0.3s;
         }
 
+        /* BRILHO DO BOTÃO SIM */
         #sim {
             background-color: #8affc1;
             font-weight: bold;
+            box-shadow: 0 0 10px #8affc1, 0 0 20px #8affc1;
+            animation: glow 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px #8affc1, 0 0 25px #8affc1;
+            }
+            to {
+                box-shadow: 0 0 20px #8affc1, 0 0 45px #8affc1;
+            }
         }
 
         #sim:hover {
-            transform: scale(1.15);
-            background-color: #74e6aa;
+            transform: scale(1.18);
         }
 
-        #nao {
-            background-color: #ff6b6b;
-            color: white;
-            position: absolute;
-        }
+/* BRILHO DO BOTÃO NÃO */
+#nao {
+    background-color: #ff6b6b;
+    color: white;
+    position: relative;
+    font-weight: bold;
+
+    box-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b;
+    animation: glowNao 2s infinite alternate ease-in-out;
+}
+
+@keyframes glowNao {
+    from {
+        box-shadow: 0 0 10px #ff6b6b, 0 0 25px #ff6b6b;
+    }
+    to {
+        box-shadow: 0 0 20px #ff6b6b, 0 0 45px #ff6b6b;
+    }
+}
 
         #mensagem-linda {
             display: none;
@@ -87,72 +153,145 @@
             animation: fadeIn 1.5s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* --- CORAÇÕES QUE CAEM --- */
+        .coracao, .explosao-coracao {
+            position: fixed;
+            color: white;
+            pointer-events: none;
         }
 
-        /* Corações animados */
         .coracao {
-            position: fixed;
             top: -10px;
             font-size: 20px;
             animation: cair 5s linear infinite;
-            color: white;
-            opacity: 0.8;
+            opacity: 0.2;
         }
 
         @keyframes cair {
             0% { transform: translateY(0) rotate(0deg); }
             100% { transform: translateY(120vh) rotate(360deg); }
         }
+
+        /* --- EXPLOSÃO DE CORAÇÕES --- */
+        @keyframes explodir {
+            0% { transform: scale(0.5) translate(0,0); opacity: 1; }
+            100% { transform: scale(2.5) translate(var(--x), var(--y)); opacity: 0; }
+        }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Quer namorar comigo? ❤️</h1>
-        <div class="buttons">
+
+    <video id="bgVideo" muted>
+        <source src="Video fundo.mp4" type="video/mp4">
+    </video>
+
+    <div class="container" id="container">
+        <h1>Karen Michelly, quer namorar comigo? ❤️</h1>
+
+        <div class="buttons" id="botoes">
             <button id="sim">Sim</button>
             <button id="nao">Não</button>
         </div>
-        <div id="mensagem-linda">Você acabou de me dar o melhor “sim” da minha vida! ❤️🥺<br>Eu te amo infinitamente!</div>
+
+        <div id="mensagem-linda">
+            Você acabou de me dar o melhor “sim” da minha vida, Karen! ❤️🥺<br>
+            Eu te amo infinitamente!
+        </div>
     </div>
 
+    <audio id="musica" src="musica.mp3"></audio>
+
     <script>
+        let fugaAtivada = false;
+
         const botaoNao = document.getElementById('nao');
         const botaoSim = document.getElementById('sim');
         const msg = document.getElementById('mensagem-linda');
+        const musica = document.getElementById('musica');
+        const video = document.getElementById('bgVideo');
+        const container = document.getElementById('container');
+        const botoes = document.getElementById('botoes');
 
-        botaoNao.addEventListener('mouseover', () => {
-            const largura = window.innerWidth - 150;
-            const altura = window.innerHeight - 80;
+        /* --- MOVE O "NÃO" DENTRO DO CONTAINER --- */
+        function moverBotaoNao() {
+            const margem = 20;
+            const rectContainer = container.getBoundingClientRect();
 
-            const novoX = Math.random() * largura;
-            const novoY = Math.random() * altura;
+            const maxLargura = rectContainer.width - botaoNao.offsetWidth - margem * 2;
+            const maxAltura  = rectContainer.height - botaoNao.offsetHeight - margem * 2;
 
-            botaoNao.style.left = novoX + "px";
-            botaoNao.style.top = novoY + "px";
+            const novoX = rectContainer.left + margem + Math.random() * maxLargura;
+            const novoY = rectContainer.top  + margem + Math.random() * maxAltura;
+
+            botaoNao.style.position = "fixed";
+            botaoNao.style.left = novoX + 'px';
+            botaoNao.style.top  = novoY + 'px';
+        }
+
+        /* --- EXPLOSÃO DE CORAÇÕES --- */
+        function explosao(x, y) {
+            for (let i = 0; i < 12; i++) {
+                const c = document.createElement("div");
+                c.classList.add("explosao-coracao");
+                c.innerHTML = "❤️";
+                c.style.left = x + "px";
+                c.style.top = y + "px";
+                c.style.fontSize = "25px";
+
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 120;
+
+                c.style.setProperty("--x", Math.cos(angle) * dist + "px");
+                c.style.setProperty("--y", Math.sin(angle) * dist + "px");
+
+                c.style.animation = "explodir 0.9s ease-out forwards";
+
+                document.body.appendChild(c);
+
+                setTimeout(() => c.remove(), 900);
+            }
+        }
+
+        /* --- ATIVA A FUGA DO BOTÃO "NÃO" --- */
+        botaoNao.addEventListener('click', (e) => {
+            fugaAtivada = true;
+            moverBotaoNao();
         });
 
-        botaoSim.addEventListener('click', () => {
+        botaoNao.addEventListener('mouseover', () => {
+            if (fugaAtivada) moverBotaoNao();
+        });
+
+        /* --- BOTÃO SIM --- */
+        botaoSim.addEventListener('click', (e) => {
+            explosao(e.clientX, e.clientY);
+
+            botoes.style.opacity = "0";
+            container.style.backdropFilter = "blur(18px)";
+
+            setTimeout(() => botoes.style.display = "none", 800);
+
             msg.style.display = 'block';
+            video.style.display = "block";
+            video.play();
+            musica.play();
             soltarCoracoes();
         });
 
+        /* --- CORAÇÕES QUE CAEM --- */
         function soltarCoracoes() {
             setInterval(() => {
-                const coracao = document.createElement('div');
-                coracao.innerHTML = '❤️';
-                coracao.classList.add('coracao');
-                coracao.style.left = Math.random() * 100 + 'vw';
-                coracao.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                document.body.appendChild(coracao);
-
-                setTimeout(() => {
-                    coracao.remove();
-                }, 5000);
+                const c = document.createElement('div');
+                c.innerHTML = '❤️';
+                c.classList.add('coracao');
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 5000);
             }, 350);
         }
     </script>
+
 </body>
 </html>
