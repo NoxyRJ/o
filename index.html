@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quer namorar comigo?</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            animation: fadeIn 1.5s ease;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.7);
+        }
+
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #sim {
+            background-color: #66ff99;
+            color: #000;
+        }
+
+        #sim:hover {
+            transform: scale(1.1);
+            background-color: #55e68a;
+        }
+
+        #nao {
+            background-color: #ff6666;
+            color: #fff;
+            position: absolute;
+        }
+
+        #mensagem-linda {
+            display: none;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 20px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quer namorar comigo? ❤️</h1>
+        <div class="buttons">
+            <button id="sim">Sim</button>
+            <button id="nao">Não</button>
+        </div>
+        <div id="mensagem-linda">Você acabou de me fazer a pessoa mais feliz do mundo! ❤️🥺<br>Eu te amo demais!</div>
+    </div>
+
+    <script>
+        const botaoNao = document.getElementById('nao');
+        const botaoSim = document.getElementById('sim');
+        const msg = document.getElementById('mensagem-linda');
+
+        // Faz o botão "não" desviar sempre
+        botaoNao.addEventListener('mouseover', () => {
+            const largura = window.innerWidth - 150;
+            const altura = window.innerHeight - 80;
+
+            const novoX = Math.random() * largura;
+            const novoY = Math.random() * altura;
+
+            botaoNao.style.left = novoX + "px";
+            botaoNao.style.top = novoY + "px";
+        });
+
+        // Ação do botão "sim"
+        botaoSim.addEventListener('click', () => {
+            msg.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
