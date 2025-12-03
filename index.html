@@ -1,12 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quer namorar comigo?</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <style>
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="Media/icon.png" type="image/png" />
+
+    <style>
         /* --- TRANSIÇÃO SUAVE DA TELA --- */
         body {
             margin: 0;
@@ -112,38 +116,26 @@
         }
 
         @keyframes glow {
-            from {
-                box-shadow: 0 0 10px #8affc1, 0 0 25px #8affc1;
-            }
-            to {
-                box-shadow: 0 0 20px #8affc1, 0 0 45px #8affc1;
-            }
+            from { box-shadow: 0 0 10px #8affc1, 0 0 25px #8affc1; }
+            to { box-shadow: 0 0 20px #8affc1, 0 0 45px #8affc1; }
         }
 
-        #sim:hover {
-            transform: scale(1.18);
+        #sim:hover { transform: scale(1.18); }
+
+        /* BRILHO DO BOTÃO NÃO */
+        #nao {
+            background-color: #ff6b6b;
+            color: white;
+            position: relative;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b;
+            animation: glowNao 2s infinite alternate ease-in-out;
         }
 
-/* BRILHO DO BOTÃO NÃO */
-#nao {
-    background-color: #ff6b6b;
-    color: white;
-    position: relative;
-    font-weight: bold;
-
-    box-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b;
-    animation: glowNao 2s infinite alternate ease-in-out;
-}
-
-@keyframes glowNao {
-    from {
-        box-shadow: 0 0 10px #ff6b6b, 0 0 25px #ff6b6b;
-    }
-    to {
-        box-shadow: 0 0 20px #ff6b6b, 0 0 45px #ff6b6b;
-    }
-}
-
+        @keyframes glowNao {
+            from { box-shadow: 0 0 10px #ff6b6b, 0 0 25px #ff6b6b; }
+            to { box-shadow: 0 0 20px #ff6b6b, 0 0 45px #ff6b6b; }
+        }
 
         #mensagem-linda {
             display: none;
@@ -187,7 +179,7 @@
     </video>
 
     <div class="container" id="container">
-        <h1>Karen Michelly, quer namorar comigo? ❤️</h1>
+        <h1 id="titulo">Karen Michelly, quer namorar comigo? ❤️</h1>
 
         <div class="buttons" id="botoes">
             <button id="sim">Sim</button>
@@ -215,18 +207,16 @@
         const video = document.getElementById('bgVideo');
         const container = document.getElementById('container');
         const botoes = document.getElementById('botoes');
+        const titulo = document.getElementById('titulo');
 
         /* --- MOVE O "NÃO" DENTRO DO CONTAINER --- */
         function moverBotaoNao() {
             const margem = 20;
             const rectContainer = container.getBoundingClientRect();
-
             const maxLargura = rectContainer.width - botaoNao.offsetWidth - margem * 2;
             const maxAltura  = rectContainer.height - botaoNao.offsetHeight - margem * 2;
-
             const novoX = rectContainer.left + margem + Math.random() * maxLargura;
             const novoY = rectContainer.top  + margem + Math.random() * maxAltura;
-
             botaoNao.style.position = "fixed";
             botaoNao.style.left = novoX + 'px';
             botaoNao.style.top  = novoY + 'px';
@@ -241,27 +231,18 @@
                 c.style.left = x + "px";
                 c.style.top = y + "px";
                 c.style.fontSize = "25px";
-
                 const angle = Math.random() * Math.PI * 2;
                 const dist = 120;
-
                 c.style.setProperty("--x", Math.cos(angle) * dist + "px");
                 c.style.setProperty("--y", Math.sin(angle) * dist + "px");
-
                 c.style.animation = "explodir 0.9s ease-out forwards";
-
                 document.body.appendChild(c);
-
                 setTimeout(() => c.remove(), 900);
             }
         }
 
         /* --- ATIVA A FUGA DO BOTÃO "NÃO" --- */
-        botaoNao.addEventListener('click', (e) => {
-            fugaAtivada = true;
-            moverBotaoNao();
-        });
-
+        botaoNao.addEventListener('click', moverBotaoNao);
         botaoNao.addEventListener('mouseover', () => {
             if (fugaAtivada) moverBotaoNao();
         });
@@ -269,17 +250,20 @@
         /* --- BOTÃO SIM --- */
         botaoSim.addEventListener('click', (e) => {
             explosao(e.clientX, e.clientY);
-
             botoes.style.opacity = "0";
             container.style.backdropFilter = "blur(18px)";
-
             setTimeout(() => botoes.style.display = "none", 800);
+
+            // Trocar o texto do título
+            titulo.textContent = "Você aceitou ser minha namorada ❤️";
 
             msg.style.display = 'block';
             video.style.display = "block";
             video.play();
-            musica.play();
+            musica.play().catch(err => console.log("Erro ao tocar música:", err));
             soltarCoracoes();
+
+            fugaAtivada = true;
         });
 
         /* --- CORAÇÕES QUE CAEM --- */
