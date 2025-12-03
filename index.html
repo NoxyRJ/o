@@ -42,25 +42,26 @@
 
         /* --- CONTAINER COM BORDA BRILHANTE --- */
         .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.15); /* Mais transparente */
-            padding: 50px;
-            border-radius: 25px;
-            backdrop-filter: blur(6px); /* Blur mais visível */
-            width: 90%;
-            max-width: 900px;
-            margin: auto;
-            margin-top: 80px;
-            position: relative;
-            transition: 0.8s ease;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.25); /* um pouco mais visível */
+    padding: 50px;
+    border-radius: 25px;
+    backdrop-filter: blur(8px); /* blur mais perceptível */
+    -webkit-backdrop-filter: blur(8px); /* para Safari */
+    background-clip: padding-box;
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+    margin-top: 80px;
+    position: relative;
+    transition: 0.8s ease;
+    box-shadow:
+        0 0 15px rgba(255, 0, 150, 0.7),
+        0 0 25px rgba(255, 0, 150, 0.5),
+        0 0 50px rgba(255, 0, 150, 0.3);
+    animation: neonPulse 3s infinite alternate ease-in-out;
+}
 
-            box-shadow:
-                0 0 15px rgba(255, 0, 150, 0.7),
-                0 0 25px rgba(255, 0, 150, 0.5),
-                0 0 50px rgba(255, 0, 150, 0.3);
-
-            animation: neonPulse 3s infinite alternate ease-in-out;
-        }
 
         @keyframes neonPulse {
             0% {
