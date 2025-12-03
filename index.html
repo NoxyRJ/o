@@ -40,27 +40,27 @@
             filter: brightness(0.35);
         }
 
-        /* --- CONTAINER COM BORDA BRILHANTE --- */
-        .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.20); /* Mais transparente */
-            padding: 50px;
-            border-radius: 25px;
-            backdrop-filter: blur(10px); /* Blur mais visível */
-            width: 90%;
-            max-width: 900px;
-            margin: auto;
-            margin-top: 80px;
-            position: relative;
-            transition: 0.8s ease;
+/* --- CONTAINER COM BORDA BRILHANTE --- */
+.container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.20); /* Transparência aumentada */
+    padding: 50px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px); /* Blur um pouco mais visível */
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+    margin-top: 80px;
+    position: relative;
+    transition: 0.8s ease;
 
-            box-shadow:
-                0 0 15px rgba(255, 0, 150, 0.7),
-                0 0 25px rgba(255, 0, 150, 0.5),
-                0 0 50px rgba(255, 0, 150, 0.3);
+    box-shadow:
+        0 0 15px rgba(255, 0, 150, 0.7),
+        0 0 25px rgba(255, 0, 150, 0.5),
+        0 0 50px rgba(255, 0, 150, 0.3);
 
-            animation: neonPulse 3s infinite alternate ease-in-out;
-        }
+    animation: neonPulse 3s infinite alternate ease-in-out;
+}
 
         @keyframes neonPulse {
             0% {
@@ -77,11 +77,10 @@
             }
         }
 
-        /* --- TITULO PRINCIPAL --- */
-        #titulo {
+        h1 {
             font-size: 2.8rem;
-            color: red; /* Texto vermelho */
-            text-shadow: 0 0 15px rgba(255,0,0,0.8);
+            color: white;
+            text-shadow: 0 0 15px rgba(255,255,255,0.8);
             animation: pulse 3s infinite ease-in-out;
         }
 
@@ -165,6 +164,7 @@
             100% { transform: translateY(120vh) rotate(360deg); }
         }
 
+        /* --- EXPLOSÃO DE CORAÇÕES --- */
         @keyframes explodir {
             0% { transform: scale(0.5) translate(0,0); opacity: 1; }
             100% { transform: scale(2.5) translate(var(--x), var(--y)); opacity: 0; }
@@ -173,6 +173,7 @@
 </head>
 
 <body>
+
     <video id="bgVideo" muted loop>
         <source src="Media/Video fundo.mp4" type="video/mp4">
     </video>    
@@ -208,20 +209,20 @@
         const botoes = document.getElementById('botoes');
         const titulo = document.getElementById('titulo');
 
-        // Função para mover botão "Não"
+        /* --- MOVE O "NÃO" DENTRO DO CONTAINER --- */
         function moverBotaoNao() {
             const margem = 20;
-            const rect = container.getBoundingClientRect();
-            const maxX = rect.width - botaoNao.offsetWidth - margem * 2;
-            const maxY = rect.height - botaoNao.offsetHeight - margem * 2;
-            const novoX = rect.left + margem + Math.random() * maxX;
-            const novoY = rect.top + margem + Math.random() * maxY;
+            const rectContainer = container.getBoundingClientRect();
+            const maxLargura = rectContainer.width - botaoNao.offsetWidth - margem * 2;
+            const maxAltura  = rectContainer.height - botaoNao.offsetHeight - margem * 2;
+            const novoX = rectContainer.left + margem + Math.random() * maxLargura;
+            const novoY = rectContainer.top  + margem + Math.random() * maxAltura;
             botaoNao.style.position = "fixed";
-            botaoNao.style.left = novoX + "px";
-            botaoNao.style.top = novoY + "px";
+            botaoNao.style.left = novoX + 'px';
+            botaoNao.style.top  = novoY + 'px';
         }
 
-        // Explosão de corações
+        /* --- EXPLOSÃO DE CORAÇÕES --- */
         function explosao(x, y) {
             for (let i = 0; i < 12; i++) {
                 const c = document.createElement("div");
@@ -240,37 +241,32 @@
             }
         }
 
-        // Ao passar o mouse, botão "Não" foge somente se fugaAtivada for true
+        /* --- ATIVA A FUGA DO BOTÃO "NÃO" --- */
+        botaoNao.addEventListener('click', moverBotaoNao);
         botaoNao.addEventListener('mouseover', () => {
             if (fugaAtivada) moverBotaoNao();
         });
 
-        // Primeiro clique no botão "Não" ativa a fuga
-        botaoNao.addEventListener('click', () => {
-            if (!fugaAtivada) fugaAtivada = true;
-            moverBotaoNao();
-        });
-
-        // Botão "Sim"
+        /* --- BOTÃO SIM --- */
         botaoSim.addEventListener('click', (e) => {
             explosao(e.clientX, e.clientY);
             botoes.style.opacity = "0";
             container.style.backdropFilter = "blur(18px)";
             setTimeout(() => botoes.style.display = "none", 800);
 
+            // Trocar o texto do título
             titulo.textContent = "Você aceitou ser minha namorada ❤️";
 
             msg.style.display = 'block';
             video.style.display = "block";
             video.play();
             musica.play().catch(err => console.log("Erro ao tocar música:", err));
-
             soltarCoracoes();
 
-            fugaAtivada = true; // botão "Não" continua fugindo
+            fugaAtivada = true;
         });
 
-        // Corazões que caem
+        /* --- CORAÇÕES QUE CAEM --- */
         function soltarCoracoes() {
             setInterval(() => {
                 const c = document.createElement('div');
@@ -283,5 +279,6 @@
             }, 350);
         }
     </script>
+
 </body>
 </html>
