@@ -223,24 +223,6 @@
             botaoNao.style.top = novoY + "px";
         }
 
-        // Explosão de corações
-        function explosao(x, y) {
-            for (let i = 0; i < 12; i++) {
-                const c = document.createElement("div");
-                c.classList.add("explosao-coracao");
-                c.innerHTML = "❤️";
-                c.style.left = x + "px";
-                c.style.top = y + "px";
-                c.style.fontSize = "25px";
-                const angle = Math.random() * Math.PI * 2;
-                const dist = 120;
-                c.style.setProperty("--x", Math.cos(angle) * dist + "px");
-                c.style.setProperty("--y", Math.sin(angle) * dist + "px");
-                c.style.animation = "explodir 0.9s ease-out forwards";
-                document.body.appendChild(c);
-                setTimeout(() => c.remove(), 900);
-            }
-        }
 
         // Ao passar o mouse, botão "Não" foge somente se fugaAtivada for true
         botaoNao.addEventListener('mouseover', () => {
