@@ -1,0 +1,64 @@
+{
+  "278691315594559489": {
+    "discordId": "278691315594559489",
+    "targets": {
+      "profile": {
+        "tracking": true,
+        "robloxId": 315909186,
+        "username": "1CH1BANN",
+        "baseTotal": 86804,
+        "gainedToday": 1835,
+        "lastUpdate": 1772593661829,
+        "lastFollowerId": 10570602326
+      },
+      "group": {
+        "tracking": true,
+        "robloxId": 16392138,
+        "username": "Black Cat's Group",
+        "baseTotal": 33466,
+        "gainedToday": 353,
+        "lastUpdate": 1772593661845
+      }
+    },
+    "history": {
+      "2026-02-28": 83524,
+      "2026-03-01": 83530,
+      "2026-03-02": 1128,
+      "2026-03-03": {
+        "profile": 86804,
+        "group": 33499
+      },
+      "2026-03-04": {
+        "group": 33466
+      }
+    }
+  },
+  "991763264788779078": {
+    "discordId": "991763264788779078",
+    "targets": {
+      "profile": {
+        "tracking": false,
+        "robloxId": 3888447484,
+        "username": "ICHIBANNCOELHO",
+        "baseTotal": 1154,
+        "gainedToday": 0,
+        "lastUpdate": 1772507092803,
+        "lastFollowerId": 10588733141
+      },
+      "group": {
+        "tracking": false,
+        "robloxId": 16392138,
+        "username": "Black Cat's Group",
+        "baseTotal": 33128,
+        "gainedToday": 0,
+        "lastUpdate": 1772507092803
+      }
+    },
+    "history": {
+      "2026-03-02": {
+        "profile": 1155,
+        "group": 33128
+      }
+    }
+  }
+}
